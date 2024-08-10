@@ -4,7 +4,8 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import userRoute from './routes/userRoute.js'
-import appointmentRoute from './routes/appointmentRoute.js'
+import appointmentRoute from './routes/appointmentRoute.js';
+
 
 dotenv.config()
 const app = express()
