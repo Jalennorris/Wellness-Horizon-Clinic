@@ -6,8 +6,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet'; // Added helmet import
-import user from './routes/user.js'
-import appointment from './routes/appointment.js'
+import userRoute from './routes/userRoute.js'
+import appointmentRoute from './routes/appointmentRoute.js'
+
 
 dotenv.config();
 
@@ -38,8 +39,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
-app.use('/user', user);
-app.use('/appointment', appointment);
+app.use('/user', userRoute);
+app.use('/appointment', appointmentRoute);
 
 // Middleware for setting secure cookies
 app.use((req, res, next) => {

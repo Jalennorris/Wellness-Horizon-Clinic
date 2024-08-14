@@ -1,5 +1,5 @@
-import pool from '../db/index';
-import { createBadRequestResponse, createErrorResponse } from '../utils/errorUtils';
+import pool from '../db/index.js';
+import { createErrorResponse,createBadRequestResponse} from '../utils/errorUtils.js';
 
 export default {
     createAppointment: async (req, res) => {

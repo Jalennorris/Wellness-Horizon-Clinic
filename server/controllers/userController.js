@@ -1,7 +1,7 @@
 import pool from '../db/index.js';
 import bcrypt from 'bcrypt';
 import generateToken from '../utils/authUtils.js';
-import { createBadRequestResponse, createErrorResponse } from '../utils/errorUtils.js';
+import { createErrorResponse,createBadRequestResponse} from '../utils/errorUtils.js';
 
 const saltRounds = 10;
 
