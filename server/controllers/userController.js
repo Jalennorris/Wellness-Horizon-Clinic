@@ -2,6 +2,8 @@ import pool from '../db/index.js';
 import bcrypt from 'bcrypt';
 import generateToken from '../utils/authUtils.js';
 import { createErrorResponse,createBadRequestResponse} from '../utils/errorUtils.js';
+import cache from '../utils/cacheUtils.js';
+
 
 const saltRounds = 10;
 
@@ -18,7 +20,7 @@ export default {
             // Check if username or email already exists
             const checkQuery = 'SELECT * FROM users WHERE username = $1 OR email = $2';
             const { rows: existingUsers } = await pool.query(checkQuery, [username, email]);
-            
+
             if (existingUsers.length > 0) {
                 // Check if the username or email exists
                 const existingUser = existingUsers[0];
@@ -29,7 +31,6 @@ export default {
                 }
             }
 
-
             // Hash the password
             const hashPassword = await bcrypt.hash(password, saltRounds);
 
@@ -37,8 +38,11 @@ export default {
             const insertQuery = 'INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING *';
             const { rows: newUser } = await pool.query(insertQuery, [username, hashPassword, email]);
 
+            // Clear cache if any
+            cache.del('user:' + username);
+
             res.status(201).json(newUser[0]);
-            
+
         } catch (error) {
             console.error('Error creating user:', error);
             res.status(500).json(createErrorResponse('Internal server error while creating user.'));
@@ -52,13 +56,24 @@ export default {
                 return res.status(400).json(createBadRequestResponse('Username and password are required.'));
             }
 
-            const query = 'SELECT * FROM users WHERE username = $1';
-            const { rows: users } = await pool.query(query, [username]);
-            if (users.length === 0) {
-                return res.status(404).json(createBadRequestResponse('User not found.'));
+            // Check cache first
+            const cacheKey = 'user:' + username;
+            const cachedUser = cache.get(cacheKey);
+
+            let user;
+            if (cachedUser) {
+                console.log('Returning cached user data');
+                user = cachedUser;
+            } else {
+                const query = 'SELECT * FROM users WHERE username = $1';
+                const { rows: users } = await pool.query(query, [username]);
+                if (users.length === 0) {
+                    return res.status(404).json(createBadRequestResponse('User not found.'));
+                }
+                user = users[0];
+                cache.set(cacheKey, user); // Cache the user data
             }
 
-            const user = users[0];
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return res.status(400).json(createBadRequestResponse('Password is incorrect.'));

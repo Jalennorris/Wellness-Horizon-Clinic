@@ -1,5 +1,6 @@
 import pool from '../db/index.js';
 import { createErrorResponse,createBadRequestResponse} from '../utils/errorUtils.js';
+import cache from '../utils/cacheUtils.js';
 
 export default {
     createAppointment: async (req, res) => {
@@ -13,6 +14,11 @@ export default {
                 VALUES ($1, $2, $3, $4, $5) 
                 RETURNING *`;
             const { rows: newAppointment } = await pool.query(appointmentQuery, [user_id, date, time, duration, description]);
+
+            // Invalidate the cache after creating a new appointment
+            cache.del('appointments');
+            cache.del('user:' + user_id);
+
             return res.status(201).json({
                 appointment: newAppointment[0],
                 status: true,
@@ -30,13 +36,27 @@ export default {
             if (!id) {
                 return res.status(400).json(createBadRequestResponse('The ID is needed to get the appointment.'));
             }
-            const query = 'SELECT * FROM appointments WHERE id = $1';
-            const { rows: appointment } = await pool.query(query, [id]);
-            if (appointment.length === 0) {
-                return res.status(404).json(createBadRequestResponse(`Appointment with ID ${id} not found.`));
+
+            // Check cache first
+            const cacheKey = `appointment:${id}`;
+            const cachedAppointment = cache.get(cacheKey);
+
+            let appointment;
+            if (cachedAppointment) {
+                console.log('Returning cached appointment data');
+                appointment = cachedAppointment;
+            } else {
+                const query = 'SELECT * FROM appointments WHERE id = $1';
+                const { rows: appointments } = await pool.query(query, [id]);
+                if (appointments.length === 0) {
+                    return res.status(404).json(createBadRequestResponse(`Appointment with ID ${id} not found.`));
+                }
+                appointment = appointments[0];
+                cache.set(cacheKey, appointment); // Cache the appointment data
             }
+
             return res.status(200).json({
-                appointment: appointment[0],
+                appointment,
                 message: `Appointment ${id} was found.`,
             });
         } catch (error) {
@@ -61,6 +81,12 @@ export default {
             if (updatedAppointment.length === 0) {
                 return res.status(404).json(createBadRequestResponse(`Appointment with ID ${id} not found.`));
             }
+
+            // Invalidate the cache after updating the appointment
+            cache.del(`appointment:${id}`);
+            cache.del('appointments');
+            cache.del('user:' + updatedAppointment[0].user_id);
+
             return res.status(200).json({
                 appointment: updatedAppointment[0],
                 status: true,
@@ -74,8 +100,21 @@ export default {
 
     getAllAppointments: async (req, res) => {
         try {
-            const query = 'SELECT * FROM appointments';
-            const { rows: appointments } = await pool.query(query);
+            // Check cache first
+            const cacheKey = 'appointments';
+            const cachedAppointments = cache.get(cacheKey);
+
+            let appointments;
+            if (cachedAppointments) {
+                console.log('Returning cached appointments data');
+                appointments = cachedAppointments;
+            } else {
+                const query = 'SELECT * FROM appointments';
+                const { rows: allAppointments } = await pool.query(query);
+                appointments = allAppointments;
+                cache.set(cacheKey, appointments); // Cache the appointments data
+            }
+
             return res.status(200).json({
                 appointments,
                 message: "All appointments retrieved successfully."
@@ -85,17 +124,32 @@ export default {
             return res.status(500).json(createErrorResponse('Internal server error when retrieving all appointments.'));
         }
     },
+
     getAppointmentsByUser: async (req, res) => {
         try {
             const { id } = req.params;
             if (!id) {
                 return res.status(400).json(createBadRequestResponse('The ID is needed to get the appointments by user.'));
             }
-            const query = 'SELECT * FROM appointments WHERE user_id = $1';
-            const { rows: appointmentsByUser } = await pool.query(query, [id]);
-            if (appointmentsByUser.length === 0) {
-                return res.status(404).json(createBadRequestResponse(`There are no appointments for user with ID ${id}.`));
+
+            // Check cache first
+            const cacheKey = `user:${id}:appointments`;
+            const cachedAppointmentsByUser = cache.get(cacheKey);
+
+            let appointmentsByUser;
+            if (cachedAppointmentsByUser) {
+                console.log('Returning cached appointments for user');
+                appointmentsByUser = cachedAppointmentsByUser;
+            } else {
+                const query = 'SELECT * FROM appointments WHERE user_id = $1';
+                const { rows: appointments } = await pool.query(query, [id]);
+                if (appointments.length === 0) {
+                    return res.status(404).json(createBadRequestResponse(`There are no appointments for user with ID ${id}.`));
+                }
+                appointmentsByUser = appointments;
+                cache.set(cacheKey, appointmentsByUser); // Cache the appointments by user data
             }
+
             return res.status(200).json({
                 appointments: appointmentsByUser,
                 message: `Here are the appointments for user with ID ${id}.`
@@ -105,5 +159,4 @@ export default {
             return res.status(500).json(createErrorResponse(`Internal server error when retrieving appointments for user with ID ${id}.`));
         }
     }
-    
 };
