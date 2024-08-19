@@ -19,6 +19,9 @@ export default {
             cache.del('appointments');
             cache.del('user:' + user_id);
 
+
+            res.set('Cache-Control', 'no-store');  // Disabling cache for create operations
+
             return res.status(201).json({
                 appointment: newAppointment[0],
                 status: true,
@@ -54,6 +57,17 @@ export default {
                 appointment = appointments[0];
                 cache.set(cacheKey, appointment); // Cache the appointment data
             }
+            //set Etag for condital requests
+            const etag = JSON.stringify(appointment)
+            res.set('ETag', etag);
+            // Check if the resource has not been modified
+
+            if(req.headers['if-none-match'] === etag){
+                return res.status(304).end() // Not modified
+            }
+
+            res.set('Cache-Control', 'public, max-age=3600');// Cache for 1 hour
+
 
             return res.status(200).json({
                 appointment,
@@ -86,6 +100,7 @@ export default {
             cache.del(`appointment:${id}`);
             cache.del('appointments');
             cache.del('user:' + updatedAppointment[0].user_id);
+            res.set('Cache-Control', 'no-store');  // Disabling cache for update operations
 
             return res.status(200).json({
                 appointment: updatedAppointment[0],
@@ -114,6 +129,7 @@ export default {
                 appointments = allAppointments;
                 cache.set(cacheKey, appointments); // Cache the appointments data
             }
+            res.set('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
 
             return res.status(200).json({
                 appointments,
@@ -148,7 +164,11 @@ export default {
                 }
                 appointmentsByUser = appointments;
                 cache.set(cacheKey, appointmentsByUser); // Cache the appointments by user data
+
             }
+
+            res.set('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+
 
             return res.status(200).json({
                 appointments: appointmentsByUser,

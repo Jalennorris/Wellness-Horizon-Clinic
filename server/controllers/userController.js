@@ -1,9 +1,8 @@
 import pool from '../db/index.js';
 import bcrypt from 'bcrypt';
 import generateToken from '../utils/authUtils.js';
-import { createErrorResponse,createBadRequestResponse} from '../utils/errorUtils.js';
-import cache from '../utils/cacheUtils.js';
-
+import { createErrorResponse, createBadRequestResponse } from '../utils/errorUtils.js';
+import cacheUtils from '../utils/cacheUtils.js'; // Import the cache utility functions
 
 const saltRounds = 10;
 
@@ -39,7 +38,9 @@ export default {
             const { rows: newUser } = await pool.query(insertQuery, [username, hashPassword, email]);
 
             // Clear cache if any
-            cache.del('user:' + username);
+            cacheUtils.delCache('user:' + username);
+
+            res.set('Cache-Control', 'no-store'); // Disable cache for user creation operations
 
             res.status(201).json(newUser[0]);
 
@@ -58,34 +59,40 @@ export default {
 
             // Check cache first
             const cacheKey = 'user:' + username;
-            const cachedUser = cache.get(cacheKey);
-
-            let user;
-            if (cachedUser) {
-                console.log('Returning cached user data');
-                user = cachedUser;
-            } else {
-                const query = 'SELECT * FROM users WHERE username = $1';
-                const { rows: users } = await pool.query(query, [username]);
-                if (users.length === 0) {
-                    return res.status(404).json(createBadRequestResponse('User not found.'));
+            cacheUtils.getCache(cacheKey, async (err, cachedUser) => {
+                if (err) {
+                    return res.status(500).json(createErrorResponse('Internal server error during login.'));
                 }
-                user = users[0];
-                cache.set(cacheKey, user); // Cache the user data
-            }
 
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-                return res.status(400).json(createBadRequestResponse('Password is incorrect.'));
-            }
+                let user;
+                if (cachedUser) {
+                    console.log('Returning cached user data');
+                    user = cachedUser;
+                } else {
+                    const query = 'SELECT * FROM users WHERE username = $1';
+                    const { rows: users } = await pool.query(query, [username]);
+                    if (users.length === 0) {
+                        return res.status(404).json(createBadRequestResponse('User not found.'));
+                    }
+                    user = users[0];
+                    cacheUtils.setCache(cacheKey, user); // Cache the user data
+                }
 
-            // Generate JWT token
-            const token = generateToken(user, process.env.JWT_SECRET);
+                const isMatch = await bcrypt.compare(password, user.password);
+                if (!isMatch) {
+                    return res.status(400).json(createBadRequestResponse('Password is incorrect.'));
+                }
 
-            res.status(200).json({
-                status: true,
-                message: 'Login successful',
-                token
+                // Generate JWT token
+                const token = generateToken(user, process.env.JWT_SECRET);
+
+                res.set('Cache-Control', 'private, max-age=3600'); // Cache the token for 1 hour
+
+                res.status(200).json({
+                    status: true,
+                    message: 'Login successful',
+                    token
+                });
             });
 
         } catch (error) {
