@@ -9,7 +9,6 @@ import helmet from 'helmet'; // Added helmet import
 import userRoute from './routes/userRoute.js'
 import appointmentRoute from './routes/appointmentRoute.js'
 
-
 dotenv.config();
 
 const app = express();
@@ -51,6 +50,14 @@ app.use((req, res, next) => {
     next();
 });
 
+// Custom root path route
+app.get('/', (req, res) => {
+    res.json({
+        status: true,
+        message: "Welcome to the API"
+    });
+});
+
 // 404 Handler
 app.use("*", (req, res) => {
     res.status(404).json({
@@ -75,6 +82,4 @@ const server = https.createServer(credentials, app);
 server.listen(port, () => {
     console.log(`Server is running on https://localhost:${port}`);
 });
-
-
 
