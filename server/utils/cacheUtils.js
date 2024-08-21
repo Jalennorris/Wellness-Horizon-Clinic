@@ -1,15 +1,18 @@
-import redisClient from '../middlewares/cacheMiddleware.js'; // Ensure redisClient is correctly imported
+// server/utils/cacheUtils.js
+import redisClient from '../middlewares/cacheMiddleware.js'
 import NodeCache from 'node-cache';
 
-// Create and configure NodeCache
-const nodeCache = new NodeCache({ stdTTL: 600 });
+/// Create and configure NodeCache
+const nodeCache = new NodeCache({ stdTTL: 600 }); // Default TTL is 600 seconds (10 minutes)
 
 // Function to get data from Redis or NodeCache
 const getCache = async (key) => {
     try {
-        // Check Redis connection
-        if (redisClient.connected) {
-            const redisData = await new Promise((resolve, reject) => {
+        let redisData;
+
+        // Check Redis connection and get data from Redis
+        if (redisClient.isOpen) {
+            redisData = await new Promise((resolve, reject) => {
                 redisClient.get(key, (err, data) => {
                     if (err) return reject(err);
                     resolve(data);
@@ -42,9 +45,9 @@ const getCache = async (key) => {
 const setCache = async (key, data, ttl = 3600) => {
     try {
         // Set in Redis
-        if (redisClient.connected) {
+        if (redisClient.isOpen) {
             await new Promise((resolve, reject) => {
-                redisClient.setex(key, ttl, JSON.stringify(data), (err) => {
+                redisClient.setEx(key, ttl, JSON.stringify(data), (err) => {
                     if (err) return reject(err);
                     resolve();
                 });
@@ -62,7 +65,7 @@ const setCache = async (key, data, ttl = 3600) => {
 const delCache = async (key) => {
     try {
         // Delete from Redis
-        if (redisClient.connected) {
+        if (redisClient.isOpen) {
             await new Promise((resolve, reject) => {
                 redisClient.del(key, (err) => {
                     if (err) return reject(err);
@@ -78,4 +81,10 @@ const delCache = async (key) => {
     }
 };
 
-export default { getCache, setCache, delCache };
+// Export NodeCache and cache utility functions
+export default {
+    getCache,
+    setCache,
+    delCache,
+    nodeCache,
+  };
