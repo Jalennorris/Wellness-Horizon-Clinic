@@ -4,6 +4,7 @@ import generateToken from '../utils/authUtils.js';
 import { createErrorResponse, createBadRequestResponse } from '../utils/errorUtils.js';
 import cacheUtils from '../utils/cacheUtils.js';
 
+
 const saltRounds = 10;
 
 export default {
@@ -21,7 +22,6 @@ export default {
             const { rows: existingUsers } = await pool.query(checkQuery, [username, email]);
 
             if (existingUsers.length > 0) {
-                // Check if the username or email exists
                 const existingUser = existingUsers[0];
                 if (existingUser.username === username) {
                     return res.status(400).json(createBadRequestResponse('Username already exists.'));
@@ -37,10 +37,10 @@ export default {
             const insertQuery = 'INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING *';
             const { rows: newUser } = await pool.query(insertQuery, [username, hashPassword, email]);
 
-            // Clear cache if any
+            // Clear any existing cache for the user
             await cacheUtils.delCache('user:' + username);
 
-            res.set('Cache-Control', 'no-store'); // Disable cache for user creation operations
+            res.set('Cache-Control', 'no-store'); // Disable caching for user creation
             res.status(201).json(newUser[0]);
 
         } catch (error) {
@@ -56,36 +56,27 @@ export default {
                 return res.status(400).json(createBadRequestResponse('Username and password are required.'));
             }
 
-            // Check cache first (Redis)
+            // Attempt to retrieve user data from cache (Redis or NodeCache)
             const cacheKey = 'user:' + username;
-            const cachedUser = await cacheUtils.getCache(cacheKey);
+            let user = await cacheUtils.getCache(cacheKey);
 
-            let user;
-            if (cachedUser) {
-                console.log('Returning cached user data from Redis');
-                user = cachedUser;
-            } else {
-                console.log('Cache miss in Redis, checking NodeCache');
-                // Fallback to NodeCache if Redis miss
-                user = cacheUtils.nodeCache.get(cacheKey);
-                if (!user) {
-                    console.log('Cache miss in NodeCache, querying database');
-                    // Query the database if both caches miss
-                    const query = 'SELECT * FROM users WHERE username = $1';
-                    const { rows: users } = await pool.query(query, [username]);
-                    if (users.length === 0) {
-                        return res.status(404).json(createBadRequestResponse('User not found.'));
-                    }
-                    user = users[0];
-
-                    // Cache in both Redis and NodeCache
-                    await cacheUtils.setCache(cacheKey, user);
-                    cacheUtils.nodeCache.set(cacheKey, user);
-                } else {
-                    console.log('Returning cached user data from NodeCache');
+            if (!user) {
+                console.log('Cache miss, querying database');
+                // Query the database if the user is not in the cache
+                const query = 'SELECT * FROM users WHERE username = $1';
+                const { rows: users } = await pool.query(query, [username]);
+                if (users.length === 0) {
+                    return res.status(404).json(createBadRequestResponse('User not found.'));
                 }
+                user = users[0];
+
+                // Cache the user data in both Redis and NodeCache
+                await cacheUtils.setCache(cacheKey, user);
+            } else {
+                console.log('Returning cached user data');
             }
 
+            // Compare the password with the hashed password in the database
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return res.status(400).json(createBadRequestResponse('Password is incorrect.'));

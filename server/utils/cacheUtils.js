@@ -2,7 +2,7 @@
 import redisClient from '../middlewares/cacheMiddleware.js'
 import NodeCache from 'node-cache';
 
-/// Create and configure NodeCache
+// Create and configure NodeCache
 const nodeCache = new NodeCache({ stdTTL: 600 }); // Default TTL is 600 seconds (10 minutes)
 
 // Function to get data from Redis or NodeCache
@@ -12,13 +12,7 @@ const getCache = async (key) => {
 
         // Check Redis connection and get data from Redis
         if (redisClient.isOpen) {
-            redisData = await new Promise((resolve, reject) => {
-                redisClient.get(key, (err, data) => {
-                    if (err) return reject(err);
-                    resolve(data);
-                });
-            });
-
+            redisData = await redisClient.get(key); // Redis v4 style
             if (redisData) {
                 console.log('Cache hit in Redis');
                 return JSON.parse(redisData);
@@ -46,12 +40,7 @@ const setCache = async (key, data, ttl = 3600) => {
     try {
         // Set in Redis
         if (redisClient.isOpen) {
-            await new Promise((resolve, reject) => {
-                redisClient.setEx(key, ttl, JSON.stringify(data), (err) => {
-                    if (err) return reject(err);
-                    resolve();
-                });
-            });
+            await redisClient.setEx(key, ttl, JSON.stringify(data)); // Redis v4 syntax for setting with expiration
         }
 
         // Set in NodeCache
@@ -66,12 +55,7 @@ const delCache = async (key) => {
     try {
         // Delete from Redis
         if (redisClient.isOpen) {
-            await new Promise((resolve, reject) => {
-                redisClient.del(key, (err) => {
-                    if (err) return reject(err);
-                    resolve();
-                });
-            });
+            await redisClient.del(key);
         }
 
         // Delete from NodeCache
@@ -87,4 +71,4 @@ export default {
     setCache,
     delCache,
     nodeCache,
-  };
+};
