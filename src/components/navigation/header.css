@@ -1,0 +1,40 @@
+.header-container {
+    background-color: white;
+    display: flex;
+    flex-direction: row; /* Aligns elements in a row */
+    justify-content: space-between; /* Ensures spacing between elements */
+    align-items: center; /* Centers items vertically */
+    padding: 10px;
+}
+
+.header-logo {
+    height: 50px; /* Adjust height as needed */
+    width: auto; /* Keeps aspect ratio */
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 20px; /* Adds spacing between logo and title */
+    position: sticky;
+    right: 68%; /* Default for larger screens */
+}
+
+@media (max-width: 768px) { 
+    .header-logo {
+        height: 40px; /* Adjust height as needed */
+    }
+    .header-title {
+        right:43%;
+        font-size: 20px;
+       
+    }
+}
+
+
+
+
+
+
+
+
