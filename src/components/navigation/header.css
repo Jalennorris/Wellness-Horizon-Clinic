@@ -5,6 +5,7 @@
     justify-content: space-between; /* Ensures spacing between elements */
     align-items: center; /* Centers items vertically */
     padding: 10px;
+    border-bottom: solid rgb(67, 65, 65) 1px;
 }
 
 .header-logo {
@@ -13,6 +14,7 @@
 }
 
 .header-title {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 24px;
     font-weight: bold;
     margin-left: 20px; /* Adds spacing between logo and title */
