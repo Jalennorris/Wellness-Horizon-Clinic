@@ -19,9 +19,15 @@ const AboutUs = () => {
                 </p>
                 
             </div>
+            <div className="aU-section2">
+               <h1>Primary care, Peak Performance, Specialized Care</h1>
+               <h2> Wellness Horizons Clinic Patients will recievce personalized care by doctors at the top of their fields.</h2>
+
           </div>  
             <h1>About Us</h1>
         </div>
+
+    </div>
     )
 
 }
