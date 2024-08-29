@@ -31,3 +31,18 @@
     color: white;
     text-decoration: none;
 }
+
+@media screen and (max-width: 400px) {
+    .footer-list{
+       flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        
+
+        
+
+            }
+
+    
+}

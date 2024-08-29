@@ -1,0 +1,234 @@
+.contact-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px
+
+}
+
+.contact-title{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
+    margin-bottom: 20px;
+
+}
+.contact-subtitle{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bolder;
+
+
+}
+
+.contact-schedule{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    outline: black solid 2px;
+    border-radius: 10px;
+    box-shadow:  black   5px 5px 5px;;
+    width: 80%;
+    margin: 1px;
+    padding: 10px;
+}
+
+.contact-address{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bolder;
+
+    padding: 5px;
+}
+
+.contact-schedule-title{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bolder;
+
+    padding: 10px;
+}
+
+.contact-schedule-text{
+    font-family: 'Times New Roman', Courier, monospace;
+    color: rgb(75, 73, 73);
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.contact-button{
+    background-color: #070807;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contact-button:hover{
+    background-color: rgb(95, 169, 219);
+    color: white;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+
+}
+
+.contact-text{
+    background-color: black;
+    font-family: 'Times New Roman', Courier, monospace;
+    color:white;
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 40px;
+    padding: 10px;
+    width: 30%;
+    border-radius: 5px;
+}
+
+.contact-text:hover{
+    background-color: rgb(95, 169, 219);
+    color: white;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+.contact-form-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    outline:black solid 2px;
+    border-radius: 10px;
+    box-shadow: black   5px 5px 5px;
+    width: 80%;
+    margin: 50px;
+    padding: 10px;
+}
+
+.contact-subtitle{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bolder;
+
+    padding: 10px;
+}
+
+.contact-form{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 100%;
+    margin: 1px;
+    padding: 10px;
+
+}
+.contact-label{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    text-align: left;
+    font-weight: bolder;
+    margin-bottom: 20px;
+}
+
+.contact-input{
+    font-family: 'Times New Roman', Courier, monospace;
+    color: rgb(75, 73, 73);
+    text-align: left;
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 90%;
+    border-radius: 5px;
+
+}
+.contact-checkbox{
+    
+    font-family: 'Times New Roman', Courier, monospace;
+    text-align: left;
+    font-size: 16px;
+    margin-top:10px ;
+
+  
+  
+}
+.contact-form-text{
+    font-family: 'Times New Roman', Courier, monospace;
+    color: rgb(75, 73, 73);
+    text-align: left;
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding: 10x;
+    width: 90%;
+    border-radius: 5px;
+
+}
+
+@media screen and (max-width: 400px) {
+    .contact-title{
+        font-size: 20px;
+    }
+    .contact-subtitle{
+        font-size: 15px;
+    }
+
+    .contact-text{
+        font-size: 15px;
+        width: 70%;
+    }
+    .contact-schedule{
+        width: 65%;
+
+
+    }
+   .contact-schedule-title{
+    font-size: 15px;
+   }
+
+   .contact-schedule-text{
+    font-size: 15px;
+
+   }
+   .contact-form-container{
+    width: 70%;
+   }
+   .contact-subtitle{
+    font-size: 15px;
+   }
+
+   .contact-label{
+    font-size: 15px;
+}
+
+   .contact-input{
+    font-size: 15px;
+   }
+
+   .contact-checkbox{
+    font-size: 15px;
+   }
+
+   .contact-form-text{
+    font-size: 15px;
+   }
+.contact-button{
+    font-size: 15px;
+}
+    
+}

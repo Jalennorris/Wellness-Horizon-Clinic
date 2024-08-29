@@ -2,15 +2,14 @@
     background-color: white;
     display: flex;
     flex-direction: row; /* Aligns elements in a row */
-    justify-content: space-between; /* Ensures spacing between elements */
     align-items: center; /* Centers items vertically */
     padding: 10px;
     border-bottom: solid rgb(67, 65, 65) 1px;
 }
 
 .header-logo {
-    height: 50px; /* Adjust height as needed */
-    width: auto; /* Keeps aspect ratio */
+    width: 60px; /* Keeps aspect ratio */
+    height: auto;
 }
 
 .header-title {
@@ -18,20 +17,46 @@
     font-size: 24px;
     font-weight: bold;
     margin-left: 20px; /* Adds spacing between logo and title */
-    position: sticky;
     right: 68%; /* Default for larger screens */
 }
-
-@media (max-width: 768px) { 
-    .header-logo {
-        height: 40px; /* Adjust height as needed */
+@media screen and (min-width: 1280px) {
+    .header-title {
+        right: 68%;
+        font-size: 24px;
     }
+}
+
+
+@media screen and (max-width: 768px) { 
     .header-title {
         right:43%;
         font-size: 20px;
        
     }
 }
+@media screen and (max-width: 480px) {
+    .header-title {
+        right: 40%;
+        font-size: 18px;
+        margin-left: 8px
+    }
+  
+
+    
+}
+
+@media screen and (max-width: 320px) {
+    .header-title {
+        right: 30%;
+        font-size: 20px;
+    }
+    .header-logo {
+        height: 40px; /* Adjust height as needed */
+    }
+    
+}
+
+
 
 
 

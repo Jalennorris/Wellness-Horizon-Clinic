@@ -1,0 +1,82 @@
+.providers-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.providers-title {
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bolder;
+    padding-bottom: px;
+    border-bottom: 2px solid black;
+    margin-bottom: 100px;
+}
+
+
+.providers{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+}
+
+.provider-card{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0,0, 0.5);
+}
+
+.provider-name {
+    font-family: monospace;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    font-weight: bolder;
+
+}
+
+.provider-title{
+    font-family: monospace;
+    font-size: 12px;
+    text-align: center;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    font-weight: bolder;
+}
+
+.provider-location{
+    font-family: monospace;
+    font-size: 12px;
+    text-align: center;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    font-weight: bolder;
+}
+
+.provider-button{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    font-weight: bolder;
+    border-radius: 8px;
+    padding: 5px;
+    width: 100%;
+}
+
+.provider-button:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
