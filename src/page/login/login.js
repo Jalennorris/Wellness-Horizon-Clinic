@@ -24,7 +24,7 @@ const Login = () => {
         }
         const response = await axios.post('/user/login', login);
         console.log(response.data);
-        navigate('/contact');
+        navigate('/patientportal');
     } catch (error) {
         console.log(`Something went wrong with login from frontend`,error);
         setError('Something went wrong with login from frontend');

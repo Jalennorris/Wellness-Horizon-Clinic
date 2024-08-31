@@ -1,0 +1,36 @@
+.patientPortal-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.patientPortal-title{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
+}
+
+.patientPortal{
+    display: flex;
+    flex-direction: column;
+  
+    border: 1px solid black;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.patientPortal-text{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    text-align: left;
+    font-weight: bolder;
+    padding-bottom: 10px;
+   
+}

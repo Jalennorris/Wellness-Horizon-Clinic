@@ -23,17 +23,15 @@ const Register = () => {
             if(register.firstname === '' || register.lastname === '' || register.email === '' || register.sex === '' || register.phone === '' || register.username === '' || register.password === '') {
                 return setError('All fields are required');
             }
-            const response = await axios.post('/user/register', register);
+            const response = await axios.post('/user/create', register);
             console.log(response.data);
-            navigate('/home');
+            navigate('/login');
         } catch (error) {
             console.log(`Something went wrong with register from frontend`,error);
             setError('Something went wrong with register from frontend');
         }
-        finally{
-            console.log('register attempted has been completed');
-        }
     }
+
     const handleChange = (e) => {
         setRegister({...register, [e.target.name]: e.target.value});
     }
@@ -56,7 +54,7 @@ const Register = () => {
                 
                 <form className='register-form' onSubmit={handleRegister}>
                     <label className='register-label'> Legal First Name</label>
-                    <input className='register-input' type="text" placeholder='Enter Name' name='firstname' vakue={register.firstname} onChange={handleChange} required />
+                    <input className='register-input' type="text" placeholder='Enter Name' name='firstname' value={register.firstname} onChange={handleChange} required />
                     <label className='register-label'>Legal Last Name</label>
                     <input className='register-input' type="text" placeholder='Enter Name'  name='lastname' value={register.lastname} onChange={handleChange} required />
 
@@ -82,6 +80,7 @@ const Register = () => {
 
                     <button className='register-button' type='submit'>Register</button>
                 </form>
+                <p className='register-text'>{error}</p>
                 <p className='register-text'> Already have an account? <Link to="/login">Login</Link></p>
             </div>
             <Footer />
