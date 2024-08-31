@@ -10,11 +10,11 @@ const saltRounds = 10;
 export default {
     createUser: async (req, res) => {
         try {
-            const { username, password, email } = req.body;
+            const {firstname, lastname, sex, phone ,username, password, email } = req.body;
 
             // Check if all required fields are provided
-            if (!username || !password || !email) {
-                return res.status(400).json(createBadRequestResponse('Username, password, and email are required.'));
+            if (!firstname && !lastname && !sex && !phone &&!username && !password &&!email)  {
+                return res.status(400).json(createBadRequestResponse(' firstname, lastname, Username, phone, password, and email are required.'));
             }
 
             // Check if username or email already exists
@@ -34,8 +34,8 @@ export default {
             const hashPassword = await bcrypt.hash(password, saltRounds);
 
             // Insert the new user into the database
-            const insertQuery = 'INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING *';
-            const { rows: newUser } = await pool.query(insertQuery, [username, hashPassword, email]);
+            const insertQuery = 'INSERT INTO users (firstname, lastname, sex, phone, username, password, email) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+            const { rows: newUser } = await pool.query(insertQuery, [firstname, lastname, sex, phone, username, hashPassword, email]);
 
             // Clear any existing cache for the user
             await cacheUtils.delCache('user:' + username);

@@ -33,4 +33,23 @@ ALTER TABLE IF EXISTS public.appointments
     ON UPDATE NO ACTION
     ON DELETE CASCADE;
 
+CREATE TABLE IF NOT EXISTS public.doctors
+(
+    id serial NOT NULL,
+    name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    specialization character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    availability jsonb DEFAULT '[]'::jsonb,
+    CONSTRAINT doctors_pkey PRIMARY KEY (id)
+);
+
+ALTER TABLE public.users
+ADD COLUMN sex character varying(10) COLLATE pg_catalog."default",
+ADD COLUMN firstname character varying(255) COLLATE pg_catalog."default",
+ADD COLUMN lastname character varying(255) COLLATE pg_catalog."default";
+
+
+ALTER TABLE IF EXISTS public.users
+ADD COLUMN phone character varying(255) COLLATE pg_catalog."default";
+
+
 END;
