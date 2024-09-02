@@ -1,4 +1,4 @@
-import Header from '../../components/navigation/header';
+import Header from '../../components/header/header';
 import Nav from '../../components/navigation/navigation';
 import photo1 from '../../images/pexels-mart-production-7088524.jpg';
 import './home.css';

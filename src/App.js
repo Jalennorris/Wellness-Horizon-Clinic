@@ -7,7 +7,7 @@ import Contact from "./page/contact/contact";
 import Login from "./page/login/login"
 import Register from "./page/Register/register";
 import PatientPortal from "./page/patientPortal/patientPortal";
-
+import Appointment from './page/patientPortal/appointment/appointments/appointment'
 
 
 function App() {
@@ -21,7 +21,8 @@ function App() {
         <Route path="contact" element={<Contact/>} />
         <Route path="login" element={<Login/>} />
         <Route path="register" element={<Register/>} />
-        <Route  path="patientportal" element={<PatientPortal/>} />
+        <Route  path="patientportal/:id" element={<PatientPortal/>} />
+        <Route path="patientportal/:id/appointments" element={<Appointment />} />
       </Routes>
     </Router>
   );

@@ -1,7 +1,7 @@
 
 import React,{useState} from 'react';
 import './login.css';
-import Header from '../../components/navigation/header';
+import Header from '../../components/header/header';
 import Nav from '../../components/navigation/navigation';
 import Footer from '../../components/footer/footer'
 import axios from 'axios';
@@ -24,7 +24,12 @@ const Login = () => {
         }
         const response = await axios.post('/user/login', login);
         console.log(response.data);
-        navigate('/patientportal');
+        localStorage.setItem('username', login.username);
+        localStorage.setItem('id', response.data.id);
+        navigate('/patientportal/'+response.data.id);
+        window.location.reload();
+
+
     } catch (error) {
         console.log(`Something went wrong with login from frontend`,error);
         setError('Something went wrong with login from frontend');

@@ -1,5 +1,5 @@
 import  React from 'react';
-import Header from '../../components/navigation/header'
+import Header from '../../components/header/header'
 import Nav from '../../components/navigation/navigation';
 import section1 from '../../images/pexels-pavel-danilyuk-7653310.jpg'
 import Heart from '../../images/MedicalHeart.jpg'

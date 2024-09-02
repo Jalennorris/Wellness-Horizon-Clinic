@@ -1,0 +1,110 @@
+.header-container {
+    background-color: white;
+    display: flex;
+    flex-direction: row; /* Aligns elements in a row */
+    align-items: center; /* Centers items vertically */
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid rgb(67, 65, 65);
+}
+
+.header-logo {
+    width: 60px; /* Keeps aspect ratio */
+    height: auto;
+}
+
+.header-title {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    flex: 1; /* This allows the title to take up available space */
+    text-align: center;
+}
+
+.header-username-container {
+    position: relative; /* This is important for positioning the dropdown */
+    display: flex; /* Ensure that items are laid out in a row */
+    align-items: center; /* Align items vertically */
+}
+
+.header-username {
+    text-align: right;
+    border: 3px solid black;
+    padding: 5px;
+    border-radius: 5px;
+    margin-right: 10px; /* Adds spacing between username and dropdown icon */
+}
+
+.header-dropdown-icon {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.header-dropdown-menu {
+    list-style-type: none;
+    width: 150px;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 85px; /* Adjust the spacing between the username and the dropdown menu */
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc; /* Corrected the border color */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.header-dropdown-item {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.header-dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+.hidden {
+    display: none;
+}
+
+/* Responsive Design Adjustments */
+@media screen and (min-width: 1280px) {
+    .header-title {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 768px) { 
+    .header-title {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header-title {
+        font-size: 14px;
+        margin-right: 150px;
+    }
+    .header-logo {
+        width: 40px; 
+        height: auto;
+    }
+    .header-username {
+        font-size: 12px;
+    }
+    .header-dropdown-menu {
+        top: 70px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .header-title {
+        font-size: 16px;
+    }
+    .header-logo {
+        width: 40px;
+    }
+}
+
+
