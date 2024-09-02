@@ -9,4 +9,6 @@ router.post('/create', user.createUser);
 // Route to log in an existing user
 router.post('/login', user.loginUser);
 
+router.get('/:id', user.getUserById);
+
 export default router;

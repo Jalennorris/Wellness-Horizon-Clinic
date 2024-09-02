@@ -8,6 +8,41 @@ import cacheUtils from '../utils/cacheUtils.js';
 const saltRounds = 10;
 
 export default {
+
+    getUserById: async (req, res) => {
+        try {
+            const { id } = req.params;
+            if (!id) {
+                return res.status(400).json(createBadRequestResponse('The ID is needed to get the user.'));
+            }
+
+            // Check cache first
+            const cacheKey = `user:${id}`;
+            let user = await cacheUtils.getCache(cacheKey);
+
+            if (!user) {
+                console.log('Cache miss, querying database');
+                const query = 'SELECT * FROM users WHERE id = $1';
+                const { rows: users } = await pool.query(query, [id]);
+                if (users.length === 0) {
+                    return res.status(404).json(createBadRequestResponse(`User with ID ${id} not found.`));
+                }
+                user = users[0];
+                await cacheUtils.setCache(cacheKey, user); // Cache the user data
+            } else {
+                console.log('Returning cached user data');
+            }
+
+            res.set('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+            return res.status(200).json({
+                user,
+                message: "User retrieved successfully."
+            });
+        } catch (error) {
+            return res.status(500).json(createErrorResponse(error.message));
+        }
+
+    },
     createUser: async (req, res) => {
         try {
             const {firstname, lastname, sex, phone ,username, password, email } = req.body;
@@ -51,7 +86,7 @@ export default {
 
     loginUser: async (req, res) => {
         try {
-            const { username, password } = req.body;
+            const { username, password,id } = req.body;
             if (!username || !password) {
                 return res.status(400).json(createBadRequestResponse('Username and password are required.'));
             }
@@ -89,7 +124,8 @@ export default {
             res.status(200).json({
                 status: true,
                 message: 'Login successful',
-                token
+                token,
+                id: user.id
             });
         } catch (error) {
             console.error('Error during login:', error);
