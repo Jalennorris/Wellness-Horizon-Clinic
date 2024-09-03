@@ -8,6 +8,7 @@ import Login from "./page/login/login"
 import Register from "./page/Register/register";
 import PatientPortal from "./page/patientPortal/patientPortal";
 import Appointment from './page/patientPortal/appointment/appointments/appointment'
+import ScheduleAppt from './page/patientPortal/scheduleAppt/scheduleAppt'
 
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
         <Route path="register" element={<Register/>} />
         <Route  path="patientportal/:id" element={<PatientPortal/>} />
         <Route path="patientportal/:id/appointments" element={<Appointment />} />
+        <Route path="patientportal/:id/appointments/patientportal/scheduleappt" element={<ScheduleAppt />} />
+      
       </Routes>
     </Router>
   );

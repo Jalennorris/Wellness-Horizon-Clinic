@@ -14,9 +14,7 @@
     border-bottom: 2px solid black;
     margin-bottom: 100px;
 }
-
-
-.providers{
+.providers-list{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
@@ -24,6 +22,14 @@
     padding: 0;
     margin: 0;
     text-decoration: none;
+}
+
+
+.providers{
+
+    padding: 0;
+    margin: 0;
+
 }
 
 .provider-card{

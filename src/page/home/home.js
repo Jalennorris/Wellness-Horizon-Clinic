@@ -2,11 +2,18 @@ import Header from '../../components/header/header';
 import Nav from '../../components/navigation/navigation';
 import photo1 from '../../images/pexels-mart-production-7088524.jpg';
 import './home.css';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import Footer from '../../components/footer/footer'
-import React, { useEffect } from 'react';
+import React, { useEffect} from 'react';
+import userStore from '../../Store/userStore'
+
 
 const Home = () => {
+    const username = userStore((state) => state.username);
+    const id = userStore((state) => state.id);
+    const navigate = useNavigate();
+    
+
     useEffect(() => {
         const section2TextElements = document.querySelectorAll('.section2-text');
         
@@ -28,6 +35,22 @@ const Home = () => {
             };
         });
     }, []);
+
+
+    const handleAppointmentClick = () => {
+        if(!username){
+            navigate('/login');
+
+        }
+        else{
+            navigate(`/patientportal/${id}/appointments`);
+        }
+  
+    }
+
+    
+
+    
   
     return (
         <div>
@@ -39,8 +62,8 @@ const Home = () => {
                     <img className="section1-photo" src={photo1} alt="Clinic" />
                     <p className="section1-text">"Your health, our priority—answers and care when you need them most."</p>
                     <div className="grid-container">
-                        <p className="grid-text">Schedule an appointment</p>
-                        <Link to={'/login'}><p className="grid-text">Login to Patient Account</p></Link>
+                    <p className="grid-text" onClick={handleAppointmentClick}>Schedule an appointment</p>
+                        <Link to={'/login'}><p className="grid-text" >Login to Patient Account</p></Link>
                         
                     </div>
                 </div>
