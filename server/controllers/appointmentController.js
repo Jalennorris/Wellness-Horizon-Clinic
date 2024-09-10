@@ -5,23 +5,26 @@ import cacheUtils from '../utils/cacheUtils.js';
 export default {
     createAppointment: async (req, res) => {
         try {
-            const { user_id, date, time, duration, description } = req.body;
-            if (!user_id || !date || !time || !duration) {
-                return res.status(400).json(createBadRequestResponse('All fields are required to complete the appointment.'));
+            const { user_id, doctor_id, specialization, date, time, description, notes } = req.body;
+    
+            // Ensure all required fields are present
+            if (!user_id || !doctor_id || !specialization || !date || !time) {
+                return res.status(400).json(createBadRequestResponse('All fields (user_id, doctor_id, specialization, date, time) are required to complete the appointment.'));
             }
-
+    
             // Insert the appointment into the database
             const appointmentQuery = `
-                INSERT INTO appointments (user_id, date, time, duration, description) 
-                VALUES ($1, $2, $3, $4, $5) 
+                INSERT INTO appointments (user_id, doctor_id, specialization, date, time, description, notes) 
+                VALUES ($1, $2, $3, $4, $5, $6, $7) 
                 RETURNING *`;
-            const { rows: newAppointment } = await pool.query(appointmentQuery, [user_id, date, time, duration, description]);
-
+            const { rows: newAppointment } = await pool.query(appointmentQuery, [user_id, doctor_id, specialization, date, time, description, notes]);
+    
             // Invalidate cache after creating a new appointment
             await cacheUtils.delCache('appointments');
             await cacheUtils.delCache('user:' + user_id);
-
-            res.set('Cache-Control', 'no-store');  // Disable caching for creation operations
+    
+            // Disable caching for creation operations
+            res.set('Cache-Control', 'no-store');
             return res.status(201).json({
                 appointment: newAppointment[0],
                 status: true,
@@ -32,7 +35,7 @@ export default {
             return res.status(500).json(createErrorResponse('Internal server error when creating appointment.'));
         }
     },
-
+    
     getByAppointmentId: async (req, res) => {
         try {
             const { id } = req.params;

@@ -31,7 +31,13 @@ export default {
             const query = 'INSERT INTO doctors (name, specialization, availability) VALUES ($1, $2, $3) RETURNING *';
             const values = [name, specialization, availability];
             const { rows } = await pool.query(query, values);
-            res.status(201).json(rows[0]);
+            res.status(201).json({
+                doctor: rows[0],
+                status: true,
+                message: "Doctor has been created successfully.",
+
+
+        });
         } catch (error) {
             console.error('Error creating doctor:', error);
             res.status(500).json(createBadRequestResponse('Failed to create doctor'));
