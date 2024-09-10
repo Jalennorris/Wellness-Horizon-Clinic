@@ -1,0 +1,105 @@
+.patientPortal-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.patientPortal-title{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
+}
+
+.patientPortal{
+    display: flex;
+    flex-direction: column;
+  
+    border: 1px solid black;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.patientPortal-text{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    text-align: left;
+    font-weight: bolder;
+    padding-bottom: 10px;
+   
+}
+
+.patientPortal-appointments-container{
+    display: flex;
+    flex-direction: column;
+    align-items: left ;
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.patientPortal-subtitle{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    text-align: left;
+    font-weight: bolder;
+    margin-left:5PX ;
+}
+.patientPortal-appointments{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: left ;
+    border: 1px solid black;
+    margin: 5px;
+}
+.patientPortal-button{
+    background-color: #070807;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    width: 25%; 
+    height: 50%;
+    margin: 5px;
+
+}
+
+.patientPortal-button:hover{
+    background-color: rgb(95, 169, 219);
+    color: white;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+.patientPortal-billing{
+    display: flex;
+    flex-direction: column;
+    align-items: left ;
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.patientPortal-billing-summary{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: left ;
+    border: 1px solid black;
+    margin: 5px;
+}

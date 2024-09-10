@@ -1,0 +1,125 @@
+.aboutUs-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px
+}
+
+.aU-title{
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
+
+}
+.aU-section1{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 1px;
+    padding: 10px;
+}
+.aU1-title{
+
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 25px;
+    text-align: left;
+    font-weight: bolder;
+}
+.aU1-text{
+    font-family: 'Times New Roman', Courier, monospace;
+    color: rgb(75, 73, 73);
+    text-align: left;
+    font-size: 16px;
+    line-height: 2.25;
+}
+.aU-section2{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    padding-top:30px ;
+    padding-right:30px ;
+    
+
+}
+
+.auSection2-photo{
+
+    width: 90%;
+    height: auto;
+    object-fit: cover;
+    opacity: 0.78;
+}
+
+.auSection2-text{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    position: absolute;
+    font-size: 20px;
+    margin-top: 20px;
+    text-align: left;
+    color: black;
+    ;
+    font-weight: bolder;
+    padding: 10px;
+    line-height: 2;
+    transform: translate(5%, 40%);
+
+  
+   
+}
+
+.aU-section3{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-top:30px ;
+    padding-right:30px ;
+}
+
+.aU3-title{
+
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 25px;
+    text-align: left;
+    font-weight: bolder;
+
+
+}
+.aU3-title2{
+
+    font-family: 'impact', Courier, monospace, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.aU3-img{
+    width: 200px;
+    height:auto
+}
+
+.aU3-text{
+    font-family: 'Times New Roman', Courier, monospace;
+    color: rgb(75, 73, 73);
+    text-align: left;
+    font-size: 16px;
+    padding: 10px;
+    line-height: 1.5;
+    text-align: center;
+
+}
+
+@media screen and (max-width: 400px) {
+    .auSection2-text{
+        font-size: 12px;
+        transform: translate(5%, 40%);
+        line-height: 1.25;
+    }
+    
+}
